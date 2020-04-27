@@ -172,3 +172,31 @@ print("Mean duration   : ", data_train.duration.mean())
 print("Maximun duration: ", data_train.duration.max())
 print("Minimum duration: ", data_train.duration.min())
 
+#predicting class probabilty and class using just mean of duration as test input
+print(dt6.predict_proba(np.array([0, 0, 371, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]).reshape(1, -1)))
+print(dt6.predict(np.array([0, 0, 371, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]).reshape(1, -1)))
+
+dt2 = tree.DecisionTreeClassifier(random_state=1, max_depth=2)
+dt2.fit(data_train, label_train)
+
+#predicting class probabilty and class using just mean of duration as test input for decsion tree with depth 2
+print(dt2.predict_proba(np.array([0, 0, 371, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]).reshape(1, -1)))
+print(dt2.predict(np.array([0, 0, 371, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]).reshape(1, -1)))
+
+#predicting class probabilty and class using just max of duration=3284 as test input for decsion tree with depth 2 and depth 6
+print("dt2: ",dt2.predict_proba(np.array([0, 0, 3284, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]).reshape(1, -1)))
+print("dt2: ",dt2.predict(np.array([0, 0, 3284, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]).reshape(1, -1)))
+
+print("dt6: ",dt6.predict_proba(np.array([0, 0, 3284, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]).reshape(1, -1)))
+print("dt6: ",dt6.predict(np.array([0, 0, 3284, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]).reshape(1, -1)))
+
+preds = dt6.predict(data_test)
+
+# Calculate accuracy
+print("\nAccuracy score: \n{}".format(metrics.accuracy_score(label_test, preds)))
+
+# Make predictions on the test set using predict_proba
+probs = dt6.predict_proba(data_test)[:,1]
+
+# Calculate the AUC metric
+print("\nArea Under Curve: \n{}".format(metrics.roc_auc_score(label_test, probs)))
